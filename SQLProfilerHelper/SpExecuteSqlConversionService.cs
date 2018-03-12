@@ -19,24 +19,30 @@ namespace SQLProfilerHelper
             VariablesAssign,
             VariableValue
         }
-
-        public void Convert()
+      
+        public void Convert(bool addNewLinesAndIdents = true)
         {
             var indentCount = 0;
             var buffer = new StringBuilder(BUFFER_SIZE);
 
             void AppendIndent()
             {
-                for (int i = 0; i < 2 * indentCount; ++i)
+                if (addNewLinesAndIdents)
                 {
-                    buffer.Append(' ');
+                for (int i = 0; i < 2 * indentCount; ++i)
+                    {
+                        buffer.Append(' ');
+                    }
                 }
             }
 
             void AppendNewLine()
             {
-                buffer.Append('\r');
-                buffer.Append('\n');
+                if (addNewLinesAndIdents)
+                {
+                    buffer.Append('\r');
+                    buffer.Append('\n');
+                }
             }
 
             char currentChar = '\0', previousChar = '\0';
@@ -49,7 +55,6 @@ namespace SQLProfilerHelper
             var quoteCounterInVariableDecls = 0;
 
             SPExecuteSQLInput = ClearLastGo(SPExecuteSQLInput);
-
 
             for (int i = 0; i < SPExecuteSQLInput.Length; i++)
             {
